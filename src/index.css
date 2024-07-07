@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #193300;
+  background-image: url("assets/images/bg.png");
+}
+
+h1 {
+  font-family: "Indie Flower", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.grid-cell {
+  @apply border bg-white aspect-square;
+}

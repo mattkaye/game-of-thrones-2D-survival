@@ -8,7 +8,6 @@ export const moveAvatar = (
   let [newGridX, newGridY] = [...currentGridCell];
   const [currentTranslateX, currentTranslateY] = [...currentPosition];
 
-  direction.preventDefault();
   if (["ArrowUp", "ArrowLeft"].includes(direction.key)) {
     additionalTranslate = -Math.abs(moveByPixels);
     newGridX = direction.key === "ArrowUp" ? newGridX - 1 : newGridX;
@@ -20,6 +19,17 @@ export const moveAvatar = (
     newGridX = direction.key === "ArrowDown" ? newGridX + 1 : newGridX;
     newGridY = direction.key === "ArrowRight" ? newGridY + 1 : newGridY;
   }
+
+  // Avatar cannot move outside of the grid, return the same position
+  if (outOfBounds([newGridX, newGridY])) {
+    return {
+      translateX: currentTranslateX,
+      translateY: currentTranslateY,
+      newGridCell: [...currentGridCell],
+    };
+  }
+
+  direction.preventDefault();
 
   switch (direction.key) {
     case "ArrowUp":
@@ -47,4 +57,9 @@ export const moveAvatar = (
         newGridCell: [8, 4],
       };
   }
+};
+
+const outOfBounds = (XandYCoordinates: number[]) => {
+  const [x, y] = [...XandYCoordinates];
+  return x < 0 || x > 8 || y < 0 || y > 8;
 };

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { moveAvatar } from "../gamePlay";
-import heroAvatar from "../assets/images/avatars/hero-jon-snow.png";
+import heroAvatar from "../assets/images/avatars/hero-jon-snow.jpg";
 
 const Grid = () => {
   let moveByPixels = 0;
@@ -14,7 +14,7 @@ const Grid = () => {
       ?.getBoundingClientRect();
 
     // Aspect ratio is 1/1 [perfect square]. So just grab the width
-    return cellDimensions ? Math.floor(cellDimensions.width) : 0;
+    return cellDimensions ? cellDimensions.width : 0;
   };
 
   useEffect(() => {
@@ -48,10 +48,10 @@ const Grid = () => {
 
   return (
     <>
-      <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-20 w-[60rem] mx-auto">
+      <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-20 w-[50rem] mx-auto">
         {[...Array(81).keys()].map((index) => (
           <div className="grid-cell" key={index}>
-            <span className="absolute">
+            <span className="absolute text-gray-400">
               ({Math.floor(index / 9)}, {index % 9})
             </span>
             {/* Hero starts at bottom / center */}

@@ -1,10 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { moveAvatar } from "../gamePlay";
 import heroAvatar from "../assets/images/avatars/hero-jon-snow.png";
 
 const Grid = () => {
   let moveByPixels = 0;
-  const ourHero = useRef<HTMLImageElement>(null);
+  // Hero starts at bottom / center
+  const [heroGridCell, setHeroGridCell] = useState([8, 4]);
+  const ourHero = useRef<HTMLDivElement>(null);
 
   const getGridCellWidth = () => {
     const cellDimensions = document
@@ -16,29 +18,33 @@ const Grid = () => {
   };
 
   useEffect(() => {
-    moveByPixels = getGridCellWidth();
-    const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-    const style = window.getComputedStyle(ourHero.current!);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      moveByPixels = getGridCellWidth();
+      const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+      const style = window.getComputedStyle(ourHero.current!);
 
-    document.addEventListener("keydown", (e) => {
       if (validKeys.includes(e.key) === false) {
         return;
       }
+
       const matrix = new WebKitCSSMatrix(style.transform);
-      let currentTranslateX = matrix.m41;
-      let currentTranslateY = matrix.m42;
+      const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
 
       const newPosition = moveAvatar(
         [currentTranslateX, currentTranslateY],
+        heroGridCell,
         moveByPixels,
         e
       );
 
       if (ourHero.current) {
         ourHero.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
+        setHeroGridCell(newPosition.newGridCell);
       }
-    });
-  }, []);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [heroGridCell]);
 
   return (
     <>
@@ -48,6 +54,7 @@ const Grid = () => {
             <span className="absolute">
               ({Math.floor(index / 9)}, {index % 9})
             </span>
+            {/* Hero starts at bottom / center */}
             {index === 76 && (
               <div className="avatar hero" ref={ourHero}>
                 <img className="rounded-full" src={heroAvatar} />

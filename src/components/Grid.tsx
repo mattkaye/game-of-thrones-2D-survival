@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { moveAvatar } from "../gamePlay";
+import heroAvatar from "../assets/images/avatars/hero-jon-snow.png";
 
 const Grid = () => {
   let moveByPixels = 0;
-  const ourHero = useRef<SVGSVGElement>(null);
+  const ourHero = useRef<HTMLImageElement>(null);
 
   const getGridCellWidth = () => {
     const cellDimensions = document
@@ -34,7 +35,7 @@ const Grid = () => {
       );
 
       if (ourHero.current) {
-        ourHero.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px)`;
+        ourHero.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
       }
     });
   }, []);
@@ -48,12 +49,9 @@ const Grid = () => {
               ({Math.floor(index / 9)}, {index % 9})
             </span>
             {index === 76 && (
-              <svg
-                className="w-full h-full transition-transform duration-[50ms]"
-                ref={ourHero}
-              >
-                <circle cx="50%" cy="50%" r="20" fill="blue" />
-              </svg>
+              <div className="avatar hero" ref={ourHero}>
+                <img className="rounded-full" src={heroAvatar} />
+              </div>
             )}
           </div>
         ))}

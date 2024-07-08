@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Grid = () => {
-  const [heroPosition, setHeroPosition] = useState<Point>([8, 4]);
-  const [cellSquareSize, setCellSquareSize] = useState(0); // Pixel size
   let moveByPixels = 0;
   const ourHero = useRef(null);
 
@@ -17,43 +15,53 @@ const Grid = () => {
 
   useEffect(() => {
     moveByPixels = getGridCellWidth();
+    let additionalTranslateY = 0;
+    let additionalTranslateX = 0;
+
     document.addEventListener("keydown", (e) => {
+      const style = window.getComputedStyle(ourHero.current!);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      let currentTranslateX = matrix.m41;
+      let currentTranslateY = matrix.m42;
+      let newTranslateX = 0;
+      let newTranslateY = 0;
+
       switch (e.key) {
         case "ArrowUp":
           e.preventDefault();
-          // Get the current transform value
-          const style = window.getComputedStyle(ourHero.current!);
-          const matrix = new WebKitCSSMatrix(style.transform);
-          console.log(matrix);
 
-          // Extract the current translateY value
-          // m41 = X | m42 = Y
-          let currentTranslateY = matrix.m42; // m42 is the translateY value in the transformation matrix
+          additionalTranslateY = -Math.abs(moveByPixels);
+          newTranslateY = Math.floor(currentTranslateY + additionalTranslateY);
 
-          // Add your desired translateY value
-          console.log("here: ", moveByPixels);
-          const additionalTranslateY = -Math.abs(moveByPixels); // Replace with your desired translateY moving up ^ value
-          const newTranslateY = currentTranslateY + additionalTranslateY;
-
-          // Apply the new transform value
-          if (ourHero.current) {
-            ourHero.current.style.transform = `translate(${matrix.m41}px, ${newTranslateY}px)`;
-          }
+          ourHero.current.style.transform = `translate(${currentTranslateX}px, ${newTranslateY}px)`;
           break;
 
         case "ArrowDown":
           e.preventDefault();
-          console.log(e.key);
+
+          additionalTranslateY = Math.abs(moveByPixels);
+          newTranslateY = Math.floor(currentTranslateY + additionalTranslateY);
+
+          // Apply the new transform value
+          if (ourHero.current) {
+            ourHero.current.style.transform = `translate(${currentTranslateX}px, ${newTranslateY}px)`;
+          }
           break;
 
         case "ArrowLeft":
           e.preventDefault();
-          console.log(e.key);
+          additionalTranslateX = -Math.abs(moveByPixels);
+          newTranslateX = Math.floor(currentTranslateX + additionalTranslateX);
+
+          ourHero.current.style.transform = `translate(${newTranslateX}px, ${currentTranslateY}px)`;
           break;
 
         case "ArrowRight":
           e.preventDefault();
-          console.log(e.key);
+          additionalTranslateX = Math.abs(moveByPixels);
+          newTranslateX = Math.floor(currentTranslateX + additionalTranslateX);
+
+          ourHero.current.style.transform = `translate(${newTranslateX}px, ${currentTranslateY}px)`;
           break;
 
         default:
@@ -73,9 +81,7 @@ const Grid = () => {
             </span>
             {index === 76 && (
               <svg
-                className="transition-transform"
-                width="100%"
-                height="100%"
+                className="w-full h-full transition-transform duration-[50ms]"
                 ref={ourHero}
               >
                 <circle cx="50%" cy="50%" r="20" fill="blue" />

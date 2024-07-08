@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
+import { moveAvatar } from "../gamePlay";
 
 const Grid = () => {
   let moveByPixels = 0;
-  const ourHero = useRef(null);
+  const ourHero = useRef<SVGSVGElement>(null);
 
   const getGridCellWidth = () => {
     const cellDimensions = document
@@ -15,58 +16,25 @@ const Grid = () => {
 
   useEffect(() => {
     moveByPixels = getGridCellWidth();
-    let additionalTranslateY = 0;
-    let additionalTranslateX = 0;
+    const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+    const style = window.getComputedStyle(ourHero.current!);
 
     document.addEventListener("keydown", (e) => {
-      const style = window.getComputedStyle(ourHero.current!);
+      if (validKeys.includes(e.key) === false) {
+        return;
+      }
       const matrix = new WebKitCSSMatrix(style.transform);
       let currentTranslateX = matrix.m41;
       let currentTranslateY = matrix.m42;
-      let newTranslateX = 0;
-      let newTranslateY = 0;
 
-      switch (e.key) {
-        case "ArrowUp":
-          e.preventDefault();
+      const newPosition = moveAvatar(
+        [currentTranslateX, currentTranslateY],
+        moveByPixels,
+        e
+      );
 
-          additionalTranslateY = -Math.abs(moveByPixels);
-          newTranslateY = Math.floor(currentTranslateY + additionalTranslateY);
-
-          ourHero.current.style.transform = `translate(${currentTranslateX}px, ${newTranslateY}px)`;
-          break;
-
-        case "ArrowDown":
-          e.preventDefault();
-
-          additionalTranslateY = Math.abs(moveByPixels);
-          newTranslateY = Math.floor(currentTranslateY + additionalTranslateY);
-
-          // Apply the new transform value
-          if (ourHero.current) {
-            ourHero.current.style.transform = `translate(${currentTranslateX}px, ${newTranslateY}px)`;
-          }
-          break;
-
-        case "ArrowLeft":
-          e.preventDefault();
-          additionalTranslateX = -Math.abs(moveByPixels);
-          newTranslateX = Math.floor(currentTranslateX + additionalTranslateX);
-
-          ourHero.current.style.transform = `translate(${newTranslateX}px, ${currentTranslateY}px)`;
-          break;
-
-        case "ArrowRight":
-          e.preventDefault();
-          additionalTranslateX = Math.abs(moveByPixels);
-          newTranslateX = Math.floor(currentTranslateX + additionalTranslateX);
-
-          ourHero.current.style.transform = `translate(${newTranslateX}px, ${currentTranslateY}px)`;
-          break;
-
-        default:
-          // Ignore all other keys
-          break;
+      if (ourHero.current) {
+        ourHero.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px)`;
       }
     });
   }, []);

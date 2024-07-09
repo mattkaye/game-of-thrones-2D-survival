@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { moveAvatar } from "../gamePlay";
 import heroAvatar from "../assets/images/avatars/hero-jon-snow.jpg";
+import cersei from "../assets/images/avatars/cersei.jpg";
 
 const Grid = () => {
-  let moveByPixels = 0;
   // Hero starts at bottom / center
   const [heroGridCell, setHeroGridCell] = useState([8, 4]);
-  const ourHero = useRef<HTMLDivElement>(null);
+  const ourHeroWrapper = useRef<HTMLDivElement>(null);
+  const cerseiWrapper = useRef<HTMLDivElement>(null);
 
+  // TODO: This shouldn't be recalculated with each render
   const getGridCellWidth = () => {
     const cellDimensions = document
       .querySelector(".grid-cell")
@@ -19,9 +21,8 @@ const Grid = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      moveByPixels = getGridCellWidth();
       const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-      const style = window.getComputedStyle(ourHero.current!);
+      const style = window.getComputedStyle(ourHeroWrapper.current!);
 
       if (validKeys.includes(e.key) === false) {
         return;
@@ -33,12 +34,12 @@ const Grid = () => {
       const newPosition = moveAvatar(
         [currentTranslateX, currentTranslateY],
         heroGridCell,
-        moveByPixels,
+        getGridCellWidth(),
         e
       );
 
-      if (ourHero.current) {
-        ourHero.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
+      if (ourHeroWrapper.current) {
+        ourHeroWrapper.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
         setHeroGridCell(newPosition.newGridCell);
       }
     };
@@ -54,9 +55,14 @@ const Grid = () => {
             <span className="absolute text-gray-400">
               ({Math.floor(index / 9)}, {index % 9})
             </span>
+            {index === 4 && (
+              <div className="avatar foe z-10" ref={cerseiWrapper}>
+                <img className="rounded-full" src={cersei} />
+              </div>
+            )}
             {/* Hero starts at bottom / center */}
             {index === 76 && (
-              <div className="avatar hero" ref={ourHero}>
+              <div className="avatar hero" ref={ourHeroWrapper}>
                 <img className="rounded-full" src={heroAvatar} />
               </div>
             )}

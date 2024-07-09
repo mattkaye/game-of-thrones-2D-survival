@@ -19,12 +19,18 @@ h1 {
 }
 
 .avatar {
-  &.hero {
-    @apply w-full h-full transition-transform duration-[50ms] scale-150;
-
-    &::before {
+  @apply w-full h-full transition-transform duration-[50ms] scale-150 relative;
+  &.hero,
+  &.foe {
+    &:before {
       @apply absolute top-0 left-0 bottom-0 right-0 content-[""] border-dashed border-blue-700 border-[3px] rounded-full -m-1;
-      animation: rotate-border 10s linear infinite;
+      animation: rotate-border 5s linear infinite;
+    }
+  }
+
+  &.foe {
+    &:before {
+      @apply border-red-800;
     }
   }
 }

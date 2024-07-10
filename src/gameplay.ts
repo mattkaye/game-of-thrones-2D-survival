@@ -7,7 +7,6 @@ export const moveAvatar = (
   let additionalTranslate = 0;
   let [newGridX, newGridY] = [...currentGridCell];
   const [currentTranslateX, currentTranslateY] = [...currentPosition];
-
   if (["ArrowUp", "ArrowLeft"].includes(direction.key)) {
     additionalTranslate = -Math.abs(moveByPixels);
     newGridX = direction.key === "ArrowUp" ? newGridX - 1 : newGridX;
@@ -20,8 +19,7 @@ export const moveAvatar = (
     newGridY = direction.key === "ArrowRight" ? newGridY + 1 : newGridY;
   }
 
-  // Avatar cannot move outside of the grid, return the same position
-  if (outOfBounds([newGridX, newGridY])) {
+  if (outOfBounds([newGridX, newGridY]) || moveByPixels === 0) {
     return {
       translateX: currentTranslateX,
       translateY: currentTranslateY,

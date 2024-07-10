@@ -1,40 +1,38 @@
 import { useEffect, useRef, useState } from "react";
 import { moveAvatar } from "../gamePlay";
 import heroAvatar from "../assets/images/avatars/hero-jon-snow.jpg";
-import cersei from "../assets/images/avatars/cersei.jpg";
+import { Foe } from "./avatars/Foe";
 
 const Grid = () => {
   // Hero starts at bottom / center
   const [heroGridCell, setHeroGridCell] = useState([8, 4]);
+  const [gridCellWidth, setGridCellWidth] = useState(0);
   const ourHeroWrapper = useRef<HTMLDivElement>(null);
-  const cerseiWrapper = useRef<HTMLDivElement>(null);
 
   // TODO: This shouldn't be recalculated with each render
   const getGridCellWidth = () => {
-    const cellDimensions = document
-      .querySelector(".grid-cell")
-      ?.getBoundingClientRect();
-
-    // Aspect ratio is 1/1 [perfect square]. So just grab the width
-    return cellDimensions ? cellDimensions.width : 0;
+    const domNode = document.querySelector(".grid-cell");
+    if (domNode) {
+      setGridCellWidth(domNode.getBoundingClientRect().width);
+    }
   };
 
   useEffect(() => {
+    getGridCellWidth();
     const handleKeyDown = (e: KeyboardEvent) => {
       const validKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-      const style = window.getComputedStyle(ourHeroWrapper.current!);
 
       if (validKeys.includes(e.key) === false) {
         return;
       }
 
+      const style = window.getComputedStyle(ourHeroWrapper.current!);
       const matrix = new WebKitCSSMatrix(style.transform);
       const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
-
       const newPosition = moveAvatar(
         [currentTranslateX, currentTranslateY],
         heroGridCell,
-        getGridCellWidth(),
+        gridCellWidth,
         e
       );
 
@@ -56,9 +54,7 @@ const Grid = () => {
               ({Math.floor(index / 9)}, {index % 9})
             </span>
             {index === 4 && (
-              <div className="avatar foe z-10" ref={cerseiWrapper}>
-                <img className="rounded-full" src={cersei} />
-              </div>
+              <Foe avatarName="cersei" gridCellWidth={gridCellWidth} />
             )}
             {/* Hero starts at bottom / center */}
             {index === 76 && (

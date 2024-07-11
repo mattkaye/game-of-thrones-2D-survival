@@ -1,22 +1,34 @@
+import { Direction } from "./customTypes";
+
 export const moveAvatar = (
   currentPosition: number[],
   currentGridCell: number[],
   moveByPixels: number,
-  direction: KeyboardEvent
+  direction?: KeyboardEvent
 ) => {
   let additionalTranslate = 0;
   let [newGridX, newGridY] = [...currentGridCell];
   const [currentTranslateX, currentTranslateY] = [...currentPosition];
-  if (["ArrowUp", "ArrowLeft"].includes(direction.key)) {
-    additionalTranslate = -Math.abs(moveByPixels);
-    newGridX = direction.key === "ArrowUp" ? newGridX - 1 : newGridX;
-    newGridY = direction.key === "ArrowLeft" ? newGridY - 1 : newGridY;
+  let dir: string = "";
+
+  // If a keyboard event is not passed, we choose a random direction for the avatar to move.
+  if (!direction?.type) {
+    dir = chooseRandomDirection();
+  } else {
+    dir = direction.key;
+    direction.preventDefault();
   }
 
-  if (["ArrowDown", "ArrowRight"].includes(direction.key)) {
+  if ([Direction.Up, Direction.Left].includes(<Direction>dir)) {
+    additionalTranslate = -Math.abs(moveByPixels);
+    newGridX = dir === Direction.Up ? newGridX - 1 : newGridX;
+    newGridY = dir === Direction.Left ? newGridY - 1 : newGridY;
+  }
+
+  if ([Direction.Down, Direction.Right].includes(<Direction>dir)) {
     additionalTranslate = Math.abs(moveByPixels);
-    newGridX = direction.key === "ArrowDown" ? newGridX + 1 : newGridX;
-    newGridY = direction.key === "ArrowRight" ? newGridY + 1 : newGridY;
+    newGridX = dir === Direction.Down ? newGridX + 1 : newGridX;
+    newGridY = dir === Direction.Right ? newGridY + 1 : newGridY;
   }
 
   if (outOfBounds([newGridX, newGridY]) || moveByPixels === 0) {
@@ -27,21 +39,17 @@ export const moveAvatar = (
     };
   }
 
-  direction.preventDefault();
-
-  switch (direction.key) {
-    case "ArrowUp":
-    case "ArrowDown":
-      console.log([newGridX, newGridY]);
+  switch (dir) {
+    case Direction.Up:
+    case Direction.Down:
       return {
         translateX: currentTranslateX,
         translateY: currentTranslateY + additionalTranslate,
         newGridCell: [newGridX, newGridY],
       };
 
-    case "ArrowLeft":
-    case "ArrowRight":
-      console.log([newGridX, newGridY]);
+    case Direction.Left:
+    case Direction.Right:
       return {
         translateX: currentTranslateX + additionalTranslate,
         translateY: currentTranslateY,
@@ -60,4 +68,9 @@ export const moveAvatar = (
 const outOfBounds = (XandYCoordinates: number[]) => {
   const [x, y] = [...XandYCoordinates];
   return x < 0 || x > 8 || y < 0 || y > 8;
+};
+
+const chooseRandomDirection = () => {
+  const directionValues = Object.values(Direction);
+  return directionValues[Math.floor(Math.random() * directionValues.length)];
 };

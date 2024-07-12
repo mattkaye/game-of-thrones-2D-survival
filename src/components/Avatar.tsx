@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { moveAvatar } from "../gamePlay";
+import { setNewPositionValues } from "../gamePlay";
 import { Direction } from "../customTypes";
 
 export const Avatar = ({
@@ -14,30 +14,38 @@ export const Avatar = ({
   startPosition: number[];
 }) => {
   const avatarWrapper = useRef<HTMLDivElement>(null);
-
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
 
+  const moveAvatar = (e?: KeyboardEvent) => {
+    const style = window.getComputedStyle(avatarWrapper.current!);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
+    const newPosition = setNewPositionValues(
+      [currentTranslateX, currentTranslateY],
+      avatarGridCell,
+      gridCellWidth,
+      e
+    );
+
+    if (avatarWrapper.current) {
+      avatarWrapper.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
+      setAvatarGridCell(newPosition.newGridCell);
+    }
+  };
+
   useEffect(() => {
+    if (type === "foe") {
+      setTimeout(() => {
+        moveAvatar();
+      }, 500);
+      return;
+    }
     const handleKeyDown = (e: KeyboardEvent) => {
       const validKeys: string[] = Object.values(Direction);
       if (validKeys.includes(e.key) === false) {
         return;
       }
-
-      const style = window.getComputedStyle(avatarWrapper.current!);
-      const matrix = new WebKitCSSMatrix(style.transform);
-      const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
-      const newPosition = moveAvatar(
-        [currentTranslateX, currentTranslateY],
-        avatarGridCell,
-        gridCellWidth,
-        e
-      );
-
-      if (avatarWrapper.current) {
-        avatarWrapper.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
-        setAvatarGridCell(newPosition.newGridCell);
-      }
+      moveAvatar(e);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);

@@ -15,11 +15,11 @@ h1 {
 }
 
 .grid-cell {
-  @apply border bg-white aspect-square;
+  @apply border bg-white aspect-square relative;
 }
 
 .avatar {
-  @apply w-full h-full transition-transform duration-[50ms] scale-150 relative;
+  @apply w-full h-full transition-transform duration-[50ms] scale-150 absolute;
   &.hero,
   &.foe {
     &:before {

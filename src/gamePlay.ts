@@ -1,6 +1,6 @@
 import { Direction } from "./customTypes";
 
-export const moveAvatar = (
+export const setNewPositionValues = (
   currentPosition: number[],
   currentGridCell: number[],
   moveByPixels: number,

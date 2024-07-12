@@ -20,22 +20,36 @@ const Grid = () => {
           </span>
           {/* Enemies at top / center */}
           {index === 4 && (
-            <Avatar
-              avatarName="cersei"
-              type="foe"
-              gridCellWidth={gridCellWidth}
-              startPosition={[0, 4]}
-            />
+            <>
+              <Avatar
+                avatarName="cersei"
+                type="foe"
+                gridCellWidth={gridCellWidth}
+                startPosition={[0, 4]}
+              />
+              <Avatar
+                avatarName="cersei"
+                type="foe"
+                gridCellWidth={gridCellWidth}
+                startPosition={[0, 4]}
+              />
+              <Avatar
+                avatarName="cersei"
+                type="foe"
+                gridCellWidth={gridCellWidth}
+                startPosition={[0, 4]}
+              />
+            </>
           )}
           {/* Hero at bottom / center */}
-          {/* {index === 76 && (
+          {index === 76 && (
             <Avatar
               avatarName="jon-snow"
               type="hero"
               gridCellWidth={gridCellWidth}
               startPosition={[8, 4]}
             />
-          )} */}
+          )}
         </div>
       ))}
     </div>

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import { setNewPositionValues } from "../gamePlay";
+import { useEffect, useId, useRef, useState } from "react";
+import { setNewPositionValues, avatarHasCollision } from "../gamePlay";
 import { Direction } from "../customTypes";
+import { usePositions } from "../PositionContext";
 
 export const Avatar = ({
   avatarName,
@@ -15,9 +16,11 @@ export const Avatar = ({
 }) => {
   const avatarWrapper = useRef<HTMLDivElement>(null);
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
+  const { positions, updatePosition } = usePositions();
+  const foeAvatarID = useId();
 
   const moveAvatar = (e?: KeyboardEvent) => {
-    const style = window.getComputedStyle(avatarWrapper.current!);
+    const style = window.getComputedStyle(avatarWrapper.current);
     const matrix = new WebKitCSSMatrix(style.transform);
     const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
     const newPosition = setNewPositionValues(
@@ -30,6 +33,11 @@ export const Avatar = ({
     if (avatarWrapper.current) {
       avatarWrapper.current.style.transform = `translate(${newPosition.translateX}px, ${newPosition.translateY}px) scale(.75)`;
       setAvatarGridCell(newPosition.newGridCell);
+      updatePosition(
+        type === "hero" ? "hero" : foeAvatarID,
+        newPosition.newGridCell
+      );
+      avatarHasCollision(positions);
     }
   };
 
@@ -37,7 +45,7 @@ export const Avatar = ({
     if (type === "foe") {
       setTimeout(() => {
         moveAvatar();
-      }, 500);
+      }, 2000);
       return;
     }
     const handleKeyDown = (e: KeyboardEvent) => {

@@ -65,6 +65,10 @@ export const setNewPositionValues = (
   }
 };
 
+export const avatarHasCollision = (positions) => {
+  console.log("collision check: ", positions);
+};
+
 const outOfBounds = (XandYCoordinates: number[]) => {
   const [x, y] = [...XandYCoordinates];
   return x < 0 || x > 8 || y < 0 || y > 8;

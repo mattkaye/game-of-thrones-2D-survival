@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
+import PositionProvider from "../PositionContext";
 
 const Grid = () => {
   const [gridCellWidth, setGridCellWidth] = useState(0);
@@ -12,47 +13,49 @@ const Grid = () => {
   }, []);
 
   return (
-    <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-20 w-[50rem] mx-auto">
-      {[...Array(81).keys()].map((index) => (
-        <div className="grid-cell" key={index}>
-          <span className="absolute text-gray-400">
-            ({Math.floor(index / 9)}, {index % 9})
-          </span>
-          {/* Enemies at top / center */}
-          {index === 4 && (
-            <>
+    <PositionProvider>
+      <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-20 w-[50rem] mx-auto">
+        {[...Array(81).keys()].map((index) => (
+          <div className="grid-cell" key={index}>
+            <span className="absolute text-gray-400">
+              ({Math.floor(index / 9)}, {index % 9})
+            </span>
+            {/* Enemies at top / center */}
+            {index === 4 && (
+              <>
+                <Avatar
+                  avatarName="cersei"
+                  type="foe"
+                  gridCellWidth={gridCellWidth}
+                  startPosition={[0, 4]}
+                />
+                <Avatar
+                  avatarName="cersei"
+                  type="foe"
+                  gridCellWidth={gridCellWidth}
+                  startPosition={[0, 4]}
+                />
+                <Avatar
+                  avatarName="cersei"
+                  type="foe"
+                  gridCellWidth={gridCellWidth}
+                  startPosition={[0, 4]}
+                />
+              </>
+            )}
+            {/* Hero at bottom / center */}
+            {index === 76 && (
               <Avatar
-                avatarName="cersei"
-                type="foe"
+                avatarName="jon-snow"
+                type="hero"
                 gridCellWidth={gridCellWidth}
-                startPosition={[0, 4]}
+                startPosition={[8, 4]}
               />
-              <Avatar
-                avatarName="cersei"
-                type="foe"
-                gridCellWidth={gridCellWidth}
-                startPosition={[0, 4]}
-              />
-              <Avatar
-                avatarName="cersei"
-                type="foe"
-                gridCellWidth={gridCellWidth}
-                startPosition={[0, 4]}
-              />
-            </>
-          )}
-          {/* Hero at bottom / center */}
-          {index === 76 && (
-            <Avatar
-              avatarName="jon-snow"
-              type="hero"
-              gridCellWidth={gridCellWidth}
-              startPosition={[8, 4]}
-            />
-          )}
-        </div>
-      ))}
-    </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </PositionProvider>
   );
 };
 

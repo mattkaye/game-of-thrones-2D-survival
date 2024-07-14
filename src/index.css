@@ -29,6 +29,7 @@ h1 {
   }
 
   &.foe {
+    @apply z-20;
     &:before {
       @apply border-red-800;
     }

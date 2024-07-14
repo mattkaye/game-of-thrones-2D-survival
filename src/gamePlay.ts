@@ -65,8 +65,12 @@ export const setNewPositionValues = (
   }
 };
 
-export const avatarHasCollision = (positions) => {
-  console.log("collision check: ", positions);
+export const avatarHasCollision = (positions: { [x: string]: number[] }) => {
+  return Object.keys(positions).some((type) => {
+    if (type !== "hero") {
+      return JSON.stringify(positions[type]) === JSON.stringify(positions.hero);
+    }
+  });
 };
 
 const outOfBounds = (XandYCoordinates: number[]) => {

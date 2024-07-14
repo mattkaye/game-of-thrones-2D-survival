@@ -4,3 +4,10 @@ export enum Direction {
   Left = "ArrowLeft",
   Right = "ArrowRight",
 }
+
+export enum Foes {
+  cersei = "cersei",
+  joffery = "joffery",
+  jamie = "jamie",
+  nightking = "nightking",
+}

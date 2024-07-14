@@ -16,11 +16,11 @@ export const Avatar = ({
 }) => {
   const avatarWrapper = useRef<HTMLDivElement>(null);
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
-  const { positions, updatePosition } = usePositions();
+  const { positions, updatePosition, collision, setCollision } = usePositions();
   const foeAvatarID = useId();
 
   const moveAvatar = (e?: KeyboardEvent) => {
-    const style = window.getComputedStyle(avatarWrapper.current);
+    const style = window.getComputedStyle(avatarWrapper.current!);
     const matrix = new WebKitCSSMatrix(style.transform);
     const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
     const newPosition = setNewPositionValues(
@@ -37,11 +37,16 @@ export const Avatar = ({
         type === "hero" ? "hero" : foeAvatarID,
         newPosition.newGridCell
       );
-      avatarHasCollision(positions);
     }
   };
+  useEffect(() => {
+    if (collision === true) {
+      console.count("end game");
+    }
+  }, [collision]);
 
   useEffect(() => {
+    setCollision(avatarHasCollision(positions));
     if (type === "foe") {
       setTimeout(() => {
         moveAvatar();

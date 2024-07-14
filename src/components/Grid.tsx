@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
 import PositionProvider from "../PositionContext";
+import { Foes } from "../customTypes";
 
 const Grid = () => {
   const [gridCellWidth, setGridCellWidth] = useState(0);
@@ -12,6 +13,19 @@ const Grid = () => {
     }
   }, []);
 
+  const makeFoes = () => {
+    return [...Object.keys(Foes)].map((foe, key: number) => {
+      return (
+        <Avatar
+          avatarName={foe}
+          key={key}
+          type="foe"
+          gridCellWidth={gridCellWidth}
+          startPosition={[0, 4]}
+        />
+      );
+    });
+  };
   return (
     <PositionProvider>
       <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-20 w-[50rem] mx-auto">
@@ -21,28 +35,7 @@ const Grid = () => {
               ({Math.floor(index / 9)}, {index % 9})
             </span>
             {/* Enemies at top / center */}
-            {index === 4 && (
-              <>
-                <Avatar
-                  avatarName="cersei"
-                  type="foe"
-                  gridCellWidth={gridCellWidth}
-                  startPosition={[0, 4]}
-                />
-                <Avatar
-                  avatarName="cersei"
-                  type="foe"
-                  gridCellWidth={gridCellWidth}
-                  startPosition={[0, 4]}
-                />
-                <Avatar
-                  avatarName="cersei"
-                  type="foe"
-                  gridCellWidth={gridCellWidth}
-                  startPosition={[0, 4]}
-                />
-              </>
-            )}
+            {index === 4 && <>{makeFoes()}</>}
             {/* Hero at bottom / center */}
             {index === 76 && (
               <Avatar

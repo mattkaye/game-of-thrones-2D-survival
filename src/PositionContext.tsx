@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-const PositionContext = createContext<number[]>([]);
+const PositionContext = createContext({});
 
 const PositionProvider = ({ children }: { children: ReactNode }) => {
   const [positions, setPositions] = useState<{ [key: string]: number[] }>({

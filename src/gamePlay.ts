@@ -1,4 +1,4 @@
-import { Direction } from "./customTypes";
+import { Direction, startingPosition } from "./customTypes";
 
 export const setNewPositionValues = (
   currentPosition: number[],
@@ -60,7 +60,7 @@ export const setNewPositionValues = (
       return {
         translateX: 0,
         translateY: 0,
-        newGridCell: [8, 4],
+        newGridCell: startingPosition.hero.startAt,
       };
   }
 };

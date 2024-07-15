@@ -10,9 +10,14 @@ export enum Foes {
   joffery = "joffery",
   jamie = "jamie",
   nightking = "nightking",
+  mountain = "mountain",
 }
 
 export const startingPosition = {
-  foe: [0, 4],
-  hero: [8, 4],
+  nightking: { startAt: [0, 4] },
+  cersei: { startAt: [2, 0] },
+  joffery: { startAt: [4, 0] },
+  mountain: { startAt: [2, 8] },
+  jamie: { startAt: [4, 8] },
+  hero: { startAt: [8, 4] },
 };

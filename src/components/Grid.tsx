@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
 import PositionProvider from "../PositionContext";
-import { Foes } from "../customTypes";
+import { Foes, startingPosition } from "../customTypes";
 
 const Grid = () => {
   const [gridCellWidth, setGridCellWidth] = useState(0);
@@ -21,7 +21,7 @@ const Grid = () => {
           key={key}
           type="foe"
           gridCellWidth={gridCellWidth}
-          startPosition={[0, 4]}
+          startPosition={startingPosition.foe}
         />
       );
     });
@@ -42,7 +42,7 @@ const Grid = () => {
                 avatarName="jon-snow"
                 type="hero"
                 gridCellWidth={gridCellWidth}
-                startPosition={[8, 4]}
+                startPosition={startingPosition.hero}
               />
             )}
           </div>

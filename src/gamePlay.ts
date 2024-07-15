@@ -82,3 +82,13 @@ const chooseRandomDirection = () => {
   const directionValues = Object.values(Direction);
   return directionValues[Math.floor(Math.random() * directionValues.length)];
 };
+
+export const getRandomIncrement = (
+  min: number,
+  max: number,
+  increment: number
+) => {
+  const range = (max - min) / increment;
+  const randomIncrement = Math.floor(Math.random() * (range + 1));
+  return min + randomIncrement * increment;
+};

@@ -1,5 +1,9 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { setNewPositionValues, avatarHasCollision } from "../gamePlay";
+import {
+  setNewPositionValues,
+  avatarHasCollision,
+  getRandomIncrement,
+} from "../gamePlay";
 import { Direction } from "../customTypes";
 import { usePositions } from "../PositionContext";
 
@@ -15,6 +19,7 @@ export const Avatar = ({
   startPosition: number[];
 }) => {
   const avatarWrapper = useRef<HTMLDivElement>(null);
+  const avatarSpeed = useRef(getRandomIncrement(300, 1000, 100));
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
   const { positions, updatePosition, collision, setCollision } = usePositions();
   const foeAvatarID = useId();
@@ -50,7 +55,7 @@ export const Avatar = ({
     if (type === "foe") {
       setTimeout(() => {
         moveAvatar();
-      }, 2000);
+      }, avatarSpeed.current);
       return;
     }
     const handleKeyDown = (e: KeyboardEvent) => {

@@ -31,7 +31,7 @@ export const setNewPositionValues = (
     newGridY = dir === Direction.Right ? newGridY + 1 : newGridY;
   }
 
-  if (outOfBounds([newGridX, newGridY]) || moveByPixels === 0) {
+  if (moveByPixels === 0 || outOfBounds([newGridX, newGridY])) {
     return {
       translateX: currentTranslateX,
       translateY: currentTranslateY,
@@ -60,7 +60,7 @@ export const setNewPositionValues = (
       return {
         translateX: 0,
         translateY: 0,
-        newGridCell: startingPosition.hero.startAt,
+        newGridCell: startingPosition.snow.startAt,
       };
   }
 };

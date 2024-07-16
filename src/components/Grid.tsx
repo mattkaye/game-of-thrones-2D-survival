@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Avatar } from "./Avatar";
 import PositionProvider from "../PositionContext";
-import { Foes, startingPosition } from "../customTypes";
+import { startingPosition } from "../customTypes";
 
 const Grid = () => {
   const [gridCellWidth, setGridCellWidth] = useState(0);
@@ -13,32 +13,17 @@ const Grid = () => {
     }
   }, []);
 
-  const makeFoes = () => {
-    return [...Object.keys(Foes)].map((foeName: string) => {
-      return (
-        <Avatar
-          avatarName={foeName}
-          key={foeName}
-          type="foe"
-          gridCellWidth={gridCellWidth}
-          startPosition={startingPosition[foeName].startAt}
-        />
-      );
-    });
-  };
-  const makeFoe = (foeName: string) => {
+  const makeAvatar = (name: string, type: string = "foe") => {
     return (
       <Avatar
-        avatarName={foeName}
-        key={foeName}
-        type="foe"
+        avatarName={name}
+        key={name}
+        type={type}
         gridCellWidth={gridCellWidth}
-        startPosition={startingPosition[foeName].startAt}
+        startPosition={startingPosition[name].startAt}
       />
     );
   };
-
-  makeFoe("nightking");
 
   return (
     <PositionProvider>
@@ -49,21 +34,12 @@ const Grid = () => {
               ({Math.floor(index / 9)}, {index % 9})
             </span>
 
-            {index === 4 && <>{makeFoe("nightking")}</>}
-            {index === 18 && <>{makeFoe("cersei")}</>}
-            {index === 26 && <>{makeFoe("mountain")}</>}
-            {index === 36 && <>{makeFoe("joffery")}</>}
-            {index === 44 && <>{makeFoe("jamie")}</>}
-
-            {/* Hero at bottom / center */}
-            {index === 76 && (
-              <Avatar
-                avatarName="jon-snow"
-                type="hero"
-                gridCellWidth={gridCellWidth}
-                startPosition={startingPosition.hero.startAt}
-              />
-            )}
+            {index === 4 && <>{makeAvatar("nightking")}</>}
+            {index === 18 && <>{makeAvatar("cersei")}</>}
+            {index === 26 && <>{makeAvatar("mountain")}</>}
+            {index === 36 && <>{makeAvatar("joffery")}</>}
+            {index === 44 && <>{makeAvatar("jamie")}</>}
+            {index === 76 && <>{makeAvatar("snow", "hero")}</>}
           </div>
         ))}
       </div>

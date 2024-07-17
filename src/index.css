@@ -8,7 +8,7 @@ body {
   background-image: url("assets/images/bg.png");
 }
 
-h1 {
+.fun-font {
   font-family: "Indie Flower", cursive;
   font-weight: 400;
   font-style: normal;
@@ -19,7 +19,7 @@ h1 {
 }
 
 .avatar {
-  @apply w-full h-full transition-transform duration-[50ms] scale-150 absolute;
+  @apply w-full h-full transition-transform duration-[100ms] scale-150 absolute;
   &.hero,
   &.foe {
     &:before {
@@ -29,10 +29,24 @@ h1 {
   }
 
   &.foe {
-    @apply z-20;
+    @apply z-20 duration-[300ms];
     &:before {
       @apply border-red-800;
     }
+  }
+}
+
+.start-battle {
+  @apply text-white relative p-4 font-semibold fun-font text-2xl transform-gpu transition-shadow ease-in-out;
+  box-shadow: 0 0 0 1px black;
+
+  &:hover {
+    box-shadow: 8px 8px 0 1px black;
+  }
+
+  &:after {
+    @apply top-0 left-0 w-full h-full opacity-20 absolute content-[""];
+    background: url("assets/images/battle-scene.jpg") no-repeat 5% 32%;
   }
 }
 

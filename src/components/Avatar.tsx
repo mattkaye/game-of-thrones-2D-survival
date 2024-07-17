@@ -21,6 +21,7 @@ export const Avatar = ({
   const avatarWrapper = useRef<HTMLDivElement>(null);
   const avatarSpeed = useRef(getRandomIncrement(300, 1000, 100));
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
+  const [gameOver, setGameOver] = useState(false);
   const { positions, updatePosition, collision, setCollision } = usePositions();
   const foeAvatarID = useId();
 
@@ -46,12 +47,15 @@ export const Avatar = ({
   };
   useEffect(() => {
     if (collision === true) {
-      console.count("end game");
+      setGameOver(true);
     }
   }, [collision]);
 
   useEffect(() => {
-    setCollision(avatarHasCollision(positions));
+    const hasCollision = avatarHasCollision(positions);
+    if (avatarHasCollision(positions)) {
+      setCollision(hasCollision);
+    }
     if (type === "foe") {
       setTimeout(() => {
         moveAvatar();

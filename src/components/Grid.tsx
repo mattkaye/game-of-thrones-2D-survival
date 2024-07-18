@@ -44,9 +44,9 @@ const Grid = () => {
             {index === 4 && <>{makeAvatar("nightking")}</>}
             {index === 18 && <>{makeAvatar("cersei")}</>}
             {index === 26 && <>{makeAvatar("mountain")}</>}
-            {index === 36 && <>{makeAvatar("joffery")}</>}
-            {index === 44 && <>{makeAvatar("jamie")}</>}
-            {index === 76 && <>{makeAvatar("snow", "hero")}</>}
+            {index === 54 && <>{makeAvatar("joffery")}</>}
+            {index === 62 && <>{makeAvatar("jamie")}</>}
+            {index === 40 && <>{makeAvatar("snow", "hero")}</>}
           </div>
         ))}
       </div>

@@ -30,6 +30,7 @@ export const Avatar = ({
     const matrix = new WebKitCSSMatrix(style.transform);
     const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
     const newPosition = setNewPositionValues(
+      positions,
       [currentTranslateX, currentTranslateY],
       avatarGridCell,
       gridCellWidth,

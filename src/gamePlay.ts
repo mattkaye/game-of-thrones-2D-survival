@@ -1,6 +1,7 @@
 import { Direction, startingPosition } from "./customTypes";
 
 export const setNewPositionValues = (
+  positions,
   currentPosition: number[],
   currentGridCell: number[],
   moveByPixels: number,
@@ -10,9 +11,10 @@ export const setNewPositionValues = (
   let [newGridX, newGridY] = [...currentGridCell];
   const [currentTranslateX, currentTranslateY] = [...currentPosition];
   let dir: string = "";
+  const isFoe = !direction?.type;
 
   // If a keyboard event is not passed, we choose a random direction for the avatar to move.
-  if (!direction?.type) {
+  if (isFoe) {
     dir = chooseRandomDirection();
   } else {
     dir = direction.key;

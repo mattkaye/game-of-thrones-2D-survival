@@ -6,6 +6,7 @@
 body {
   background-color: #193300;
   background-image: url("assets/images/bg.png");
+  overflow-x: hidden;
 }
 
 .fun-font {
@@ -29,7 +30,7 @@ body {
   }
 
   &.foe {
-    @apply z-20 duration-[300ms];
+    @apply z-20 duration-[100ms];
     &:before {
       @apply border-red-800;
     }

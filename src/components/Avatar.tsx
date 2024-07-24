@@ -21,7 +21,11 @@ const Avatar = ({
   const avatarWrapper = useRef<HTMLDivElement>(null);
   const avatarSpeed = useRef(getRandomIncrement(300, 1000, 100));
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
-  const { positions, updatePosition, collision, setCollision } = usePositions();
+  const { positions, updatePosition, setCollision } = usePositions() as {
+    positions: { [x: string]: number[] };
+    updatePosition: (type: string, newPosition: number[]) => void;
+    setCollision: (collision: boolean) => void;
+  };
   const foeAvatarID = useId();
 
   const moveAvatar = (e?: KeyboardEvent) => {
@@ -29,7 +33,6 @@ const Avatar = ({
     const matrix = new WebKitCSSMatrix(style.transform);
     const [currentTranslateX, currentTranslateY] = [matrix.m41, matrix.m42];
     const newPosition = setNewPositionValues(
-      positions,
       [currentTranslateX, currentTranslateY],
       avatarGridCell,
       gridCellWidth,

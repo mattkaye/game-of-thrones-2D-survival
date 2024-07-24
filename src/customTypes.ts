@@ -13,3 +13,11 @@ export const startingPosition = {
   jamie: { startAt: [6, 8] },
   snow: { startAt: [4, 4] },
 };
+
+export type Avatars =
+  | "nightking"
+  | "cersei"
+  | "joffery"
+  | "mountain"
+  | "jamie"
+  | "snow";

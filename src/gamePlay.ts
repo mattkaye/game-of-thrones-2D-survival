@@ -1,7 +1,6 @@
 import { Direction, startingPosition } from "./customTypes";
 
 export const setNewPositionValues = (
-  positions,
   currentPosition: number[],
   currentGridCell: number[],
   moveByPixels: number,

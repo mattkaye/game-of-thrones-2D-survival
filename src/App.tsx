@@ -5,7 +5,7 @@ import GOTLogo from "../src/assets/images/got-logo.svg?inline";
 import Grid from "./components/Grid";
 
 function App() {
-  const [gameNumber, setGameNumber] = useState(0);
+  const [startGame, setStartGame] = useState(false);
   const [clockValue, setClockValue] = useState("");
 
   let seconds = 0;
@@ -21,15 +21,14 @@ function App() {
   };
 
   const battleButton = () => {
-    const message = gameNumber > 0 ? "Restart Battle" : "Ready For Battle?";
     return (
       <button
         onClick={() => {
-          setGameNumber(gameNumber + 1);
+          setStartGame(true);
         }}
         className="start-battle fun-font"
       >
-        ⚔️ {message}
+        ⚔️ Ready For Battle?
       </button>
     );
   };
@@ -37,7 +36,7 @@ function App() {
   useEffect(() => {
     const clock = setInterval(updateClock, 1000);
     return () => clearInterval(clock);
-  }, [gameNumber]);
+  }, [startGame]);
 
   return (
     <PositionProvider>
@@ -56,9 +55,9 @@ function App() {
           {battleButton()}
         </div>
         <h1 className="text-center text-4xl text-orange-500 font-bold pt-6">
-          {gameNumber > 0 && clockValue}
+          {startGame && clockValue}
         </h1>
-        <section>{gameNumber > 0 && <Grid key={gameNumber} />}</section>
+        <section>{startGame && <Grid clock={clockValue} />}</section>
       </main>
     </PositionProvider>
   );

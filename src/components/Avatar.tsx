@@ -7,7 +7,7 @@ import {
 import { Direction } from "../customTypes";
 import { usePositions } from "../PositionContext";
 
-export const Avatar = ({
+const Avatar = ({
   avatarName,
   type,
   gridCellWidth,
@@ -21,7 +21,6 @@ export const Avatar = ({
   const avatarWrapper = useRef<HTMLDivElement>(null);
   const avatarSpeed = useRef(getRandomIncrement(300, 1000, 100));
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
-  const [gameOver, setGameOver] = useState(false);
   const { positions, updatePosition, collision, setCollision } = usePositions();
   const foeAvatarID = useId();
 
@@ -46,11 +45,6 @@ export const Avatar = ({
       );
     }
   };
-  useEffect(() => {
-    if (collision === true) {
-      setGameOver(true);
-    }
-  }, [collision]);
 
   useEffect(() => {
     const hasCollision = avatarHasCollision(positions);
@@ -80,3 +74,5 @@ export const Avatar = ({
     </div>
   );
 };
+
+export default Avatar;

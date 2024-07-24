@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import { Avatar } from "./Avatar";
+import { useEffect, useRef, useState } from "react";
+import Avatar from "./Avatar";
+import ModalWindow from "./ModalWindow";
 import { startingPosition } from "../customTypes";
 import { usePositions } from "../PositionContext";
 
-const Grid = () => {
+const Grid = ({ clock }: { clock: string }) => {
   const [gridCellWidth, setGridCellWidth] = useState(0);
-  const { collision, setCollision } = usePositions();
+  const { collision } = usePositions();
+  let clockTime = useRef("");
 
   useEffect(() => {
-    setCollision(false);
     const domNode = document.querySelector(".grid-cell");
     if (domNode) {
       setGridCellWidth(domNode.getBoundingClientRect().width);
@@ -17,7 +18,8 @@ const Grid = () => {
 
   useEffect(() => {
     if (collision) {
-      console.log("gameOver");
+      console.log("gameOver", collision);
+      clockTime.current = clock;
     }
   }, [collision]);
   const makeAvatar = (name: string, type: string = "foe") => {
@@ -34,6 +36,7 @@ const Grid = () => {
 
   return (
     <>
+      {collision && <ModalWindow clockTime={clockTime.current} />}
       <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-10 w-[50rem] mx-auto">
         {[...Array(81).keys()].map((index) => (
           <div className="grid-cell" key={index}>

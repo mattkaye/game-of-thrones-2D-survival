@@ -3,6 +3,7 @@ import {
   setNewPositionValues,
   avatarHasCollision,
   getRandomIncrement,
+  debounce,
 } from "../gamePlay";
 import { Direction } from "../customTypes";
 import { usePositions } from "../PositionContext";
@@ -19,7 +20,7 @@ const Avatar = ({
   startPosition: number[];
 }) => {
   const avatarWrapper = useRef<HTMLDivElement>(null);
-  const avatarSpeed = useRef(getRandomIncrement(300, 1000, 100));
+  const avatarSpeed = useRef(getRandomIncrement(300, 600, 100));
   const [avatarGridCell, setAvatarGridCell] = useState(startPosition);
   const { positions, updatePosition, setCollision } = usePositions() as {
     positions: { [x: string]: number[] };
@@ -49,6 +50,10 @@ const Avatar = ({
     }
   };
 
+  const debounceHeroAvatarMovement = debounce((e?: KeyboardEvent) =>
+    moveAvatar(e)
+  );
+
   useEffect(() => {
     const hasCollision = avatarHasCollision(positions);
     if (avatarHasCollision(positions)) {
@@ -65,7 +70,8 @@ const Avatar = ({
       if (validKeys.includes(e.key) === false) {
         return;
       }
-      moveAvatar(e);
+      e.preventDefault();
+      debounceHeroAvatarMovement(e);
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -73,7 +79,7 @@ const Avatar = ({
 
   return (
     <div className={`avatar ${type} z-10`} ref={avatarWrapper}>
-      <img className="rounded-full" src={`/${avatarName}.jpg`} />
+      <img className='rounded-full' src={`/${avatarName}.jpg`} />
     </div>
   );
 };

@@ -12,7 +12,6 @@ const Grid = ({ clock }: { clock: string }) => {
   const playTheme = () => {
     const audio = new Audio("/got-music.mp3");
     audio.addEventListener("canplaythrough", () => {
-      /* the audio is now playable; play it if permissions allow */
       audio.play();
     });
   };
@@ -45,9 +44,9 @@ const Grid = ({ clock }: { clock: string }) => {
   return (
     <>
       {collision && <ModalWindow clockTime={clockTime.current} />}
-      <div className="battle-grid grid grid-cols-9 grid-rows-9 mt-10 w-[50rem] mx-auto">
+      <div className='battle-grid'>
         {[...Array(81).keys()].map((index) => (
-          <div className="grid-cell" key={index}>
+          <div className='grid-cell' key={index}>
             {index === 4 && <>{makeAvatar("nightking")}</>}
             {index === 18 && <>{makeAvatar("cersei")}</>}
             {index === 26 && <>{makeAvatar("mountain")}</>}

@@ -93,3 +93,13 @@ export const getRandomIncrement = (
   const randomIncrement = Math.floor(Math.random() * (range + 1));
   return min + randomIncrement * increment;
 };
+
+export const debounce = (func: { (e?: KeyboardEvent): void; apply?: any }) => {
+  let timer: number;
+  return (...args: KeyboardEvent[]) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, 100);
+  };
+};

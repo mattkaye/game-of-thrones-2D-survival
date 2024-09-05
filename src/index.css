@@ -15,8 +15,18 @@ body {
   font-style: normal;
 }
 
+.battle-grid {
+  @apply grid grid-cols-9 grid-rows-9 mt-10 w-[50rem] mx-auto relative rounded-3xl;
+  filter: drop-shadow(5px 5px 10px #000000);
+  background: url("assets/images/map.webp") no-repeat right / cover;
+
+  &:after {
+    @apply absolute bottom-0 left-0 w-full h-full opacity-60 content-[""] bg-black rounded-3xl;
+  }
+}
+
 .grid-cell {
-  @apply border bg-white aspect-square relative;
+  @apply aspect-square relative;
 }
 
 .avatar {
@@ -24,7 +34,7 @@ body {
   &.hero,
   &.foe {
     &:before {
-      @apply absolute top-0 left-0 bottom-0 right-0 content-[""] border-dashed border-blue-700 border-[3px] rounded-full -m-1;
+      @apply absolute top-0 left-0 bottom-0 right-0 content-[""] border-dashed border-blue-300 border-[3px] rounded-full -m-1;
       animation: rotate-border 5s linear infinite;
     }
   }
@@ -32,7 +42,7 @@ body {
   &.foe {
     @apply z-20 duration-[100ms];
     &:before {
-      @apply border-red-800;
+      @apply border-orange-500;
     }
   }
 }
